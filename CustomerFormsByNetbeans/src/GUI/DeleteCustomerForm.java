@@ -4,6 +4,11 @@
  */
 package GUI;
 
+import Customer.Customer;
+import CustomerController.CustomerController;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author hp
@@ -151,7 +156,17 @@ public class DeleteCustomerForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtondeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtondeleteActionPerformed
-        // TODO add your handling code here:
+                String id=jTextFieldid.getText();
+				try{
+					boolean isDeleted=CustomerController.deleteCustomer(id);
+					if(isDeleted){
+						JOptionPane.showMessageDialog(null,"Deleted..");
+					}else{
+						JOptionPane.showMessageDialog(null,"Delete fail..");
+					}
+				}catch(IOException ex){
+					
+				}        // TODO add your handling code here:
     }//GEN-LAST:event_jButtondeleteActionPerformed
 
     private void jButtoncancleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtoncancleActionPerformed
@@ -159,7 +174,18 @@ public class DeleteCustomerForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtoncancleActionPerformed
 
     private void jTextFieldidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldidActionPerformed
-        // TODO add your handling code here:
+        try{
+					Customer customer=CustomerController.searchCustomer(jTextFieldid.getText());
+					if(customer!=null){
+						jTextFieldidname.setText(customer.getName());
+						jTextFieldidaddress.setText(customer.getAddress());
+						jTextFieldidsalary.setText(""+customer.getSalary()); 
+					}else{
+						JOptionPane.showMessageDialog(null,"Customer not found...");
+					}		
+				}catch(IOException ex){
+				
+				}		            // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldidActionPerformed
 
     private void jTextFieldidsalaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldidsalaryActionPerformed

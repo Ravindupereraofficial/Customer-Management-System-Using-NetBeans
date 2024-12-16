@@ -5,6 +5,7 @@
 package CustomerController;
 
 import Customer.Customer;
+import List.List;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -39,9 +40,10 @@ public class CustomerController {
 
         return String.format("CUS#%05d", lastIdNumber + 1); // Ensures the format is "ODR#00001", "ODR#00002", etc.
     }
-    
-    
-	public static Customer searchCustomer(String id)throws IOException{
+}
+
+   
+   public static Customer searchCustomer(String id)throws IOException{
 		BufferedReader br=new BufferedReader(new FileReader("Customer.txt"));
 		String line=br.readLine();
 		boolean isExist=false;
@@ -63,8 +65,79 @@ public class CustomerController {
 		}
 	
 	}
-    
-}
+   
+   public static boolean deleteCustomer(String id)throws IOException{
+		BufferedReader br=new BufferedReader(new FileReader("Customer.txt"));
+		List customerlist=new List();
+		String line=br.readLine();
+		while(line!=null){
+			String[] rowData=line.split(",");
+			Customer customer=new Customer(rowData[0],rowData[1],rowData[2],Double.parseDouble(rowData[3]));
+			customerlist.add(customer);
+			line=br.readLine();
+		}	
+		boolean isDeleted=customerlist.remove(new Customer(id,null,null,0));
+		
+		FileWriter fw=new FileWriter("Customer.txt");
+		for(int i=0;i<customerlist.size();i++){
+			
+			Customer customer=customerlist.get(i);
+			fw.write(customer.toString()+"\n");
+			
+			}
+			fw.close();
+			return isDeleted;
+		
+		
+		}
+
+   
+   public static boolean updateCustomer(Customer customer)throws IOException{
+		BufferedReader br=new BufferedReader(new FileReader("Customer.txt"));
+		List customerlist=new List();
+		String line=br.readLine();
+		while(line!=null){
+			String[] rowData=line.split(",");
+			Customer c1=new Customer(rowData[0],rowData[1],rowData[2],Double.parseDouble(rowData[3]));
+			customerlist.add(c1);
+			line=br.readLine();
+		}	
+		
+		int index=customerlist.search(customer);
+		if(index!=-1){
+				boolean isUpdate=customerlist.set(index,customer);
+				
+				if(isUpdate){
+					
+				FileWriter fw=new FileWriter("Customer.txt");
+				for(int i=0;i<customerlist.size();i++){
+					
+					Customer c1=customerlist.get(i);
+					fw.write(c1.toString()+"\n");
+					
+					}
+					fw.close();
+					return isUpdate;
+				}
+				
+		}
+	return false;
+    }
+   
+   public static List getAllCustomer()throws IOException{
+		BufferedReader br=new BufferedReader(new FileReader("Customer.txt"));
+		List customerlist=new List();
+		String line=br.readLine();
+		while(line!=null){
+			String[] rowData=line.split(",");
+			Customer customer=new Customer(rowData[0],rowData[1],rowData[2],Double.parseDouble(rowData[3]));
+			customerlist.add(customer);
+			line=br.readLine();
+		}	
+		return customerlist;
+		
+		}
+
 
     
 }
