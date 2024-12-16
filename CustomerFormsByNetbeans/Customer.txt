@@ -1,0 +1,2 @@
+CUS#00001,dfghjkl,dfghjkl;,2.3456789E8
+CUS#00002,sdfghjkl,dfghjkl;,3456789.0
